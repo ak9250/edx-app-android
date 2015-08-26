@@ -20,6 +20,7 @@ import org.edx.mobile.discussion.DiscussionCommentPostedEvent;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.task.GetCommentListTask;
+import org.edx.mobile.task.GetThreadTask;
 import org.edx.mobile.view.adapters.CourseDiscussionResponsesAdapter;
 import org.edx.mobile.view.adapters.IPagination;
 
@@ -101,7 +102,7 @@ public class CourseDiscussionResponsesFragment extends RoboFragment implements C
                 }
                 if ( refresh ){
                     //it clear up details and reset pagination
-                    courseDiscussionResponsesAdapter.setDiscussionThread(discussionThread);
+                    courseDiscussionResponsesAdapter.clear();
                 }
                 boolean hasMore = threadComments.next != null && threadComments.next.length() > 0;
                 courseDiscussionResponsesAdapter.addPage(threadComments.getResults(), hasMore);
@@ -115,6 +116,29 @@ public class CourseDiscussionResponsesFragment extends RoboFragment implements C
             }
         };
         getCommentListTask.execute();
+
+    }
+
+    @Nullable
+    private GetThreadTask getThreadTask;
+
+    private void fetchDiscussionThread() {
+        if ( getThreadTask != null ){
+            getThreadTask.cancel(true);
+        }
+        getThreadTask = new GetThreadTask(getActivity(), discussionThread.getIdentifier()) {
+            @Override
+            public void onSuccess(DiscussionThread discussionThread) {
+                CourseDiscussionResponsesFragment.this.discussionThread = discussionThread;
+                courseDiscussionResponsesAdapter.setDiscussionThread(discussionThread);
+            }
+
+            @Override
+            public void onException(Exception ex) {
+                logger.error(ex);
+            }
+        };
+        getThreadTask.execute();
 
     }
 
@@ -133,6 +157,7 @@ public class CourseDiscussionResponsesFragment extends RoboFragment implements C
     public void onEventMainThread(DiscussionCommentPostedEvent event) {
         // TODO: Optimization: Only refresh if it's a reply to this post or a comment on one of its replies
         getCommentList(true);
+        fetchDiscussionThread();
     }
 
     /**

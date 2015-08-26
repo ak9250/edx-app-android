@@ -318,11 +318,14 @@ public class CourseDiscussionResponsesAdapter extends RecyclerView.Adapter {
         return RowType.RESPONSE;
     }
 
+    public void clear() {
+        this.discussionResponses.clear();
+        pagination.clear();
+        notifyDataSetChanged();
+    }
 
     public void setDiscussionThread(DiscussionThread discussionThread) {
         this.discussionThread = discussionThread;
-        this.discussionResponses.clear();
-        pagination.clear();
         notifyDataSetChanged();
     }
 

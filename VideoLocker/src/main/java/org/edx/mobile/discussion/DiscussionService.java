@@ -78,6 +78,8 @@ public interface DiscussionService {
     @GET("/api/discussion/v1/threads/")
     TopicThreads searchThreadList(@Query("course_id") String courseId, @Query("text_search") String text, @Query("page_size") int pageSize, @Query("page") int page ) throws RetroHttpException;
 
+    @GET("/api/discussion/v1/threads/{thread_id}/")
+    DiscussionThread getThread(@Path("thread_id") String threadId) throws RetroHttpException;
 
     @GET("/api/discussion/v1/comments/")
     ThreadComments getCommentList(@Query("thread_id") String threadId, @Query("page_size") int pageSize, @Query("page") int page) throws RetroHttpException;
