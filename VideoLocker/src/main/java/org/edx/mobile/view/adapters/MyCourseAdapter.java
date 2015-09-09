@@ -4,14 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import org.edx.mobile.R;
 import org.edx.mobile.core.IEdxEnvironment;
@@ -22,6 +27,7 @@ import org.edx.mobile.model.api.StartType;
 import org.edx.mobile.social.SocialMember;
 import org.edx.mobile.util.DateUtil;
 import org.edx.mobile.util.images.ImageCacheManager;
+import org.edx.mobile.util.images.TopAnchorWidthFillTransformation;
 import org.edx.mobile.view.custom.SocialFacePileView;
 
 import java.text.SimpleDateFormat;
@@ -150,10 +156,12 @@ BaseListAdapter<EnrolledCoursesResponse> {
             holder.certificateBanner.setVisibility(View.GONE);
         }
 
-        holder.courseImage.setDefaultImageResId(R.drawable.edx_map);
-        holder.courseImage.setImageUrl(courseData.getCourse_image(environment.getConfig()),
-            imageCacheManager.getImageLoader());
-        holder.courseImage.setTag(courseData);
+        Glide.with(getContext())
+                .load(courseData.getCourse_image(environment.getConfig()))
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.edx_map)
+                .transform(new TopAnchorWidthFillTransformation(getContext()))
+                .into(holder.courseImage);
 
         if (showSocial) {
 
@@ -187,7 +195,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
                 .findViewById(R.id.school_code_tv);
         holder.starting_from = (TextView) convertView
                 .findViewById(R.id.starting_from);
-        holder.courseImage = (NetworkImageView) convertView
+        holder.courseImage = (ImageView) convertView
                 .findViewById(R.id.course_image);
         holder.new_course_content = (LinearLayout) convertView
                 .findViewById(R.id.new_course_content_layout);
@@ -203,7 +211,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
     }
 
     private static class ViewHolder extends BaseViewHolder {
-        NetworkImageView courseImage;
+        ImageView courseImage;
         TextView courseTitle;
         TextView schoolCodeTv;
         TextView orgCodeTv;

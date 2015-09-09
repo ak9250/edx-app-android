@@ -2,25 +2,26 @@ package org.edx.mobile.view;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 import com.google.inject.Inject;
-import org.edx.mobile.discussion.CourseDiscussionInfo;
 
 import org.edx.mobile.R;
 import org.edx.mobile.core.IEdxEnvironment;
+import org.edx.mobile.discussion.CourseDiscussionInfo;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.CourseEntry;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.task.GetCourseDiscussionInfoTask;
 import org.edx.mobile.third_party.iconify.IconView;
 import org.edx.mobile.third_party.iconify.Iconify;
+import org.edx.mobile.util.images.TopAnchorWidthFillTransformation;
 import org.edx.mobile.view.common.TaskProcessCallback;
 
 import roboguice.fragment.RoboFragment;
@@ -125,8 +126,6 @@ public class CourseDashboardFragment extends RoboFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
         try {
             final Bundle bundle = getArguments();
             courseData = (EnrolledCoursesResponse) bundle
@@ -135,17 +134,13 @@ public class CourseDashboardFragment extends RoboFragment {
             if ( courseData == null )
                 return;
 
-            String headerImageUrl = courseData.getCourse().getCourse_image(environment.getConfig());
-            NetworkImageView headerImageView = (NetworkImageView)getView().findViewById(R.id.header_image_view);
-            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            float screenWidth = displayMetrics.widthPixels;
-            float ideaHeight = screenWidth * 9 / 16;
-
-            headerImageView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, (int) ideaHeight));
-            headerImageView.requestLayout();
-
-            headerImageView.setImageUrl(headerImageUrl, environment.getImageCacheManager().getImageLoader() );
+            final String headerImageUrl = courseData.getCourse().getCourse_image(environment.getConfig());
+            final ImageView headerImageView = (ImageView)getView().findViewById(R.id.header_image_view);
+            Glide.with(CourseDashboardFragment.this)
+                    .load(headerImageUrl)
+                    .skipMemoryCache(true)
+                    .transform(new TopAnchorWidthFillTransformation(getActivity()))
+                    .into(headerImageView);
 
             courseTextName.setText(courseData.getCourse().getName());
             CourseEntry course = courseData.getCourse();
