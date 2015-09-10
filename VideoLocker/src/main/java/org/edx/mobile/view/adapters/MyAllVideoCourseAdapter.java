@@ -2,23 +2,19 @@ package org.edx.mobile.view.adapters;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import org.edx.mobile.R;
 import org.edx.mobile.core.IEdxEnvironment;
 import org.edx.mobile.model.api.CourseEntry;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.util.MemoryUtil;
-import org.edx.mobile.util.images.TopAnchorWidthFillTransformation;
+import org.edx.mobile.util.images.TopAnchorFillWidthTransformation;
 
 public abstract class MyAllVideoCourseAdapter extends BaseListAdapter<EnrolledCoursesResponse> {
     private long lastClickTime;
@@ -43,9 +39,8 @@ public abstract class MyAllVideoCourseAdapter extends BaseListAdapter<EnrolledCo
 
         Glide.with(getContext())
                 .load(courseData.getCourse_image(environment.getConfig()))
-                .skipMemoryCache(true)
                 .placeholder(R.drawable.edx_map)
-                .transform(new TopAnchorWidthFillTransformation(getContext()))
+                .transform(new TopAnchorFillWidthTransformation(getContext()))
                 .into(holder.courseImage);
     }
 
@@ -75,7 +70,7 @@ public abstract class MyAllVideoCourseAdapter extends BaseListAdapter<EnrolledCo
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-        //This has been used so that if user clicks continuously on the screen, 
+        //This has been used so that if user clicks continuously on the screen,
         //two activities should not be opened
         long currentTime = SystemClock.elapsedRealtime();
         if (currentTime - lastClickTime > MIN_CLICK_INTERVAL) {

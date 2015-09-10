@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,9 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import org.edx.mobile.R;
 import org.edx.mobile.core.IEdxEnvironment;
@@ -27,7 +23,7 @@ import org.edx.mobile.model.api.StartType;
 import org.edx.mobile.social.SocialMember;
 import org.edx.mobile.util.DateUtil;
 import org.edx.mobile.util.images.ImageCacheManager;
-import org.edx.mobile.util.images.TopAnchorWidthFillTransformation;
+import org.edx.mobile.util.images.TopAnchorFillWidthTransformation;
 import org.edx.mobile.view.custom.SocialFacePileView;
 
 import java.text.SimpleDateFormat;
@@ -92,7 +88,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
 
         if (enrollment.getCourse().hasUpdates()) {
             holder.new_course_content.setVisibility(View.VISIBLE);
-            holder.starting_from_layout.setVisibility(View.GONE);
+            holder.starting_from.setVisibility(View.GONE);
             holder.new_course_content.setTag(courseData);
             holder.new_course_content
             .setOnClickListener(new OnClickListener() {
@@ -105,7 +101,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
         } else {
             try{
                 holder.new_course_content.setVisibility(View.GONE);
-                holder.starting_from_layout.setVisibility(View.VISIBLE);
+                holder.starting_from.setVisibility(View.VISIBLE);
 
                 SimpleDateFormat dateformat = new SimpleDateFormat("MMMM dd");
 
@@ -120,9 +116,9 @@ BaseListAdapter<EnrolledCoursesResponse> {
                         startDt = getContext().getString(R.string.label_starting_from)
                                 + " - " + dateformat.format(startDate);                 
                         holder.starting_from.setText(startDt);
-                        holder.starting_from_layout.setVisibility(View.VISIBLE);
+                        holder.starting_from.setVisibility(View.VISIBLE);
                     }else{
-                        holder.starting_from_layout.setVisibility(View.GONE);
+                        holder.starting_from.setVisibility(View.GONE);
                     }
                 }
                 else if (courseData.isStarted() && courseData.isEnded()) {
@@ -130,9 +126,9 @@ BaseListAdapter<EnrolledCoursesResponse> {
                         endDt = getContext().getString(R.string.label_ended)
                                 + " - " + dateformat.format(endDate);
                         holder.starting_from.setText(endDt);
-                        holder.starting_from_layout.setVisibility(View.VISIBLE);
+                        holder.starting_from.setVisibility(View.VISIBLE);
                     }else{
-                        holder.starting_from_layout.setVisibility(View.GONE);
+                        holder.starting_from.setVisibility(View.GONE);
                     }
                 } else if (courseData.isStarted() && !courseData.isEnded()) {
                     if(endDate!=null){
@@ -141,7 +137,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
                         holder.starting_from.setText(endDt);
 
                     }else{
-                        holder.starting_from_layout.setVisibility(View.GONE);
+                        holder.starting_from.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception ex) {
@@ -158,9 +154,8 @@ BaseListAdapter<EnrolledCoursesResponse> {
 
         Glide.with(getContext())
                 .load(courseData.getCourse_image(environment.getConfig()))
-                .skipMemoryCache(true)
                 .placeholder(R.drawable.edx_map)
-                .transform(new TopAnchorWidthFillTransformation(getContext()))
+                .transform(new TopAnchorFillWidthTransformation(getContext()))
                 .into(holder.courseImage);
 
         if (showSocial) {
@@ -199,9 +194,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
                 .findViewById(R.id.course_image);
         holder.new_course_content = (LinearLayout) convertView
                 .findViewById(R.id.new_course_content_layout);
-        holder.starting_from_layout = (LinearLayout) convertView
-                .findViewById(R.id.starting_from_layout);
-        holder.certificateBanner = (RelativeLayout) convertView
+        holder.certificateBanner = convertView
                 .findViewById(R.id.course_certified_banner);
         holder.facePileView = (SocialFacePileView) convertView
                 .findViewById(R.id.course_item_facepileview);
@@ -218,8 +211,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
         TextView orSymbolTv;
         TextView starting_from;
         LinearLayout new_course_content;
-        LinearLayout starting_from_layout;
-        RelativeLayout certificateBanner;
+        View certificateBanner;
         LinearLayout facePileContainer;
         SocialFacePileView facePileView;
     }

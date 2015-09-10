@@ -9,14 +9,16 @@ import android.os.Build;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
-/**
- * Created by miankhalid on 9/9/15.
- */
-public class TopAnchorWidthFillTransformation extends BitmapTransformation {
+public class TopAnchorFillWidthTransformation extends BitmapTransformation {
     private final Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
 
-    public TopAnchorWidthFillTransformation(Context context) {
+    public TopAnchorFillWidthTransformation(Context context) {
         super(context);
+    }
+
+    @Override
+    public String getId() {
+        return "TOP_ANCHOR_FILL_WIDTH";
     }
 
     @Override
@@ -24,10 +26,8 @@ public class TopAnchorWidthFillTransformation extends BitmapTransformation {
                                int outWidth, int outHeight) {
         final int width = toTransform.getWidth();
         final float widthRatio = outWidth / (float) width;
-        if (outWidth > width) {
-            outWidth = width;
-            outHeight = Math.round(outHeight / widthRatio);
-        }
+        outWidth = width;
+        outHeight = Math.round(outHeight / widthRatio);
         Bitmap newBitmap = Bitmap.createBitmap(
                 outWidth, outHeight, toTransform.getConfig());
         newBitmap.setDensity(toTransform.getDensity());
@@ -40,10 +40,5 @@ public class TopAnchorWidthFillTransformation extends BitmapTransformation {
         }
         canvas.drawBitmap(toTransform, 0, 0, paint);
         return newBitmap;
-    }
-
-    @Override
-    public String getId() {
-        return "TOP_ANCHOR_WIDTH_FILL";
     }
 }
