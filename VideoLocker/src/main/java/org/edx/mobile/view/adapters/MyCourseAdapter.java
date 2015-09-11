@@ -21,7 +21,6 @@ import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.model.api.StartType;
 import org.edx.mobile.social.SocialMember;
 import org.edx.mobile.util.DateUtil;
-import org.edx.mobile.util.images.ImageCacheManager;
 import org.edx.mobile.util.images.TopAnchorFillWidthTransformation;
 import org.edx.mobile.view.custom.SocialFacePileView;
 
@@ -30,15 +29,10 @@ import java.util.Date;
 import java.util.List;
 
 
-public abstract class MyCourseAdapter extends
-BaseListAdapter<EnrolledCoursesResponse> {
-
+public abstract class MyCourseAdapter extends BaseListAdapter<EnrolledCoursesResponse> {
     private long lastClickTime;
-
     private boolean showSocial;
-
     private CourseFriendsListener courseFriendsListener;
-    private ImageCacheManager imageCacheManager;
 
     public interface CourseFriendsListener {
         public void fetchCourseFriends(EnrolledCoursesResponse course);
@@ -241,9 +235,5 @@ BaseListAdapter<EnrolledCoursesResponse> {
             this.notifyDataSetChanged();
         }
 
-    }
-
-    public void setImageCacheManager(ImageCacheManager imageCacheManager) {
-        this.imageCacheManager = imageCacheManager;
     }
 }
