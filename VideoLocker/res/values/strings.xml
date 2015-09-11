@@ -75,7 +75,6 @@
     <!-- Alert dialog cancel button -->
     <string name="play_data_dialog_Cancel">Cancel</string>
 
-
     <!-- Login Activity Place Holders -->
     <!-- Hint text for login field -->
     <string name="email_username">User name or e-mail address</string>
@@ -108,8 +107,6 @@
     <string name="login_title">Sign in to edX</string>
     <!-- Accessible content description of close button on Sign in and Sign up screen -->
     <string name="close">Close</string>
-    <!-- Accessible content description of cancel button to cancel video download -->
-    <string name="cancel">Cancel</string>
     <!-- Accessible content description prefix of dropdowns on Sign up screen, like, country and gender dropdowns -->
     <string name="dropdown_list_prefix">Dropdown list.</string>
 
@@ -451,6 +448,8 @@
     <string name="title_lecture_complete">You\'ve reached the end of this video.</string>
     <!-- Alert dialog prompt at end of video. -->
     <string name="msg_lecture_complete">Would you like to watch the next video?</string>
+    <!-- Accessible content description of cancel button to cancel video download -->
+    <string name="cancel">Cancel</string>
 
 
     <!-- Message shown video download in process -->

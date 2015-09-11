@@ -65,7 +65,7 @@ public class CourseDashboardFragment extends RoboFragment {
         //Implementation Note: - we can create a list view and populate the list.
         //but as number of rows are fixed and each row is different. the only common
         //thing is UI layout. so we reuse the same UI layout programmatically here.
-        LayoutInflater inflater = getLayoutInflater(savedInstanceState);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
         ViewHolder holder = createViewHolder(inflater, parent);
 
         holder.typeView.setIcon(Iconify.IconValue.fa_list_alt);
@@ -140,7 +140,7 @@ public class CourseDashboardFragment extends RoboFragment {
 
             courseTextName.setText(courseData.getCourse().getName());
             CourseEntry course = courseData.getCourse();
-            courseTextDetails.setText(course.getDescription(this.getActivity()));
+            courseTextDetails.setText(course.getDescription(getActivity()));
 
         } catch (Exception ex) {
             logger.error(ex);

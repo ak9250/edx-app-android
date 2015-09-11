@@ -6,10 +6,9 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -87,10 +86,10 @@ BaseListAdapter<EnrolledCoursesResponse> {
         }
 
         if (enrollment.getCourse().hasUpdates()) {
-            holder.new_course_content.setVisibility(View.VISIBLE);
+            holder.newCourseContent.setVisibility(View.VISIBLE);
             holder.starting_from.setVisibility(View.GONE);
-            holder.new_course_content.setTag(courseData);
-            holder.new_course_content
+            holder.newCourseContent.setTag(courseData);
+            holder.newCourseContent
             .setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -100,7 +99,7 @@ BaseListAdapter<EnrolledCoursesResponse> {
             });
         } else {
             try{
-                holder.new_course_content.setVisibility(View.GONE);
+                holder.newCourseContent.setVisibility(View.GONE);
                 holder.starting_from.setVisibility(View.VISIBLE);
 
                 SimpleDateFormat dateformat = new SimpleDateFormat("MMMM dd");
@@ -192,13 +191,13 @@ BaseListAdapter<EnrolledCoursesResponse> {
                 .findViewById(R.id.starting_from);
         holder.courseImage = (ImageView) convertView
                 .findViewById(R.id.course_image);
-        holder.new_course_content = (LinearLayout) convertView
+        holder.newCourseContent = (ViewGroup) convertView
                 .findViewById(R.id.new_course_content_layout);
         holder.certificateBanner = convertView
                 .findViewById(R.id.course_certified_banner);
         holder.facePileView = (SocialFacePileView) convertView
                 .findViewById(R.id.course_item_facepileview);
-        holder.facePileContainer = (LinearLayout) convertView
+        holder.facePileContainer = (ViewGroup) convertView
                 .findViewById(R.id.course_item_facepile_container);
         return holder;
     }
@@ -210,9 +209,9 @@ BaseListAdapter<EnrolledCoursesResponse> {
         TextView orgCodeTv;
         TextView orSymbolTv;
         TextView starting_from;
-        LinearLayout new_course_content;
         View certificateBanner;
-        LinearLayout facePileContainer;
+        ViewGroup newCourseContent;
+        ViewGroup facePileContainer;
         SocialFacePileView facePileView;
     }
 
